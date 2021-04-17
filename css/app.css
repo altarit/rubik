@@ -1,0 +1,137 @@
+
+#relative {
+  position: relative;
+}
+
+#cubicDiv {
+  position: fixed;
+  width: 500px;
+  height: 700px;
+  left: 0;
+}
+#cubicBackDiv {
+  position: fixed;
+  width: 500px;
+  height: 700px;
+  left: 500px;
+}
+
+.side {
+  background: #CCC;
+  flex-flow: column;
+  margin: 100px auto;
+  border: 1px solid #000;
+  display: flex;
+}
+
+.row {
+  flex-flow: row;
+  display: flex;
+  flex: 0 1 100%;
+}
+
+#side0 {
+  position: absolute;
+  top: 0;
+  left: 122px;
+  width: 200px;
+  height: 200px;
+  transform: rotate(45deg);
+}
+
+#side1 {
+  position: absolute;
+  top: 200px;
+  left: 50px;
+  width: 200px;
+  height: 150px;
+  transform: rotate(45deg) skew(45deg);
+}
+
+#side2 {
+  position: absolute;
+  top: 200px;
+  left: 195px;
+  width: 200px;
+  height: 150px;
+  transform: rotate(-45deg) skew(-45deg);
+}
+
+#side3 {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 200px;
+  height: 150px;
+  transform: rotate(-45deg) skew(-45deg) scale(1, 1);
+
+}
+
+#side4 {
+  position: absolute;
+  top: 50px;
+  left: 195px;
+  width: 200px;
+  height: 150px;
+  transform: rotate(45deg) skew(45deg) scale(1, 1);
+}
+
+
+
+#side5 {
+  position: absolute;
+  top: 205px;
+  left: 122px;
+  width: 200px;
+  height: 200px;
+  transform: rotate(45deg) scale(1, 1);
+}
+
+.cell {
+  border: 1px solid #000;
+  flex: 0 1 100%;
+}
+
+
+.cell[color=O] {
+  background: #E80;
+}
+.cell[color=O].dragging {
+  background: #D60;
+}
+
+.cell[color=R] {
+  background: #F00;
+}
+.cell[color=R].dragging {
+  background: #D00;
+}
+
+.cell[color=W] {
+  background: #FFF;
+}
+.cell[color=W].dragging {
+  background: #DDD;
+}
+
+.cell[color=Y] {
+  background: #FF0;
+}
+.cell[color=Y].dragging {
+  background: #DD0;
+}
+
+.cell[color=B] {
+  background: #00F;
+}
+.cell[color=B].dragging {
+  background: #00D;
+}
+
+.cell[color=G] {
+  background: #0F0;
+}
+.cell[color=G].dragging {
+  background: #0D0;
+}
+
