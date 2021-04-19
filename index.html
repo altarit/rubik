@@ -24,8 +24,31 @@
 </head>
 
 <body>
-<input id="rowSize" type="number" min="1" max="12" value="3"/>
-<button id="resetBtn">Reset</button>
+<div class="headerButtons">
+  <button id="menuBtn">Menu</button>
+  <button id="paletteBtn">Palette</button>
+</div>
+<div id="menu">
+  <div>
+    <label for="rowSize">Cube size: </label>
+    <input id="rowSize" type="number" min="1" max="12" value="3"/>
+    <button id="resetBtn">Reset</button>
+  </div>
+  <div>
+    <label for="randomizeDepth">Moves: </label>
+    <input id="randomizeDepth" type="number" min="1" max="999" value="100" step="1"/>
+    <button id="randomizeBtn">Randomize</button>
+  </div>
+  <button id="solveBtn">Solve</button>
+</div>
+<div id="palette">
+  <button class="colorBtn" color="W"></button>
+  <button class="colorBtn" color="B"></button>
+  <button class="colorBtn" color="O"></button>
+  <button class="colorBtn" color="G"></button>
+  <button class="colorBtn" color="R"></button>
+  <button class="colorBtn" color="Y"></button>
+</div>
 
 <div id="relative">
   <div id="cubicDiv">
@@ -34,7 +57,6 @@
   <div id="cubicBackDiv">
   </div>
 </div>
-
 
 
 <script src="js/vendor/modernizr-3.11.2.min.js"></script>

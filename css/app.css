@@ -1,19 +1,58 @@
+button:focus {outline:0;}
+
+.headerButtons {
+  height: 50px;
+  background: #b3d4fc;
+  display: flex;
+  justify-content: space-between;
+}
+
+#menu {
+  position: fixed;
+  top: 50px;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  z-index: 999;
+  background: #b3d4fc;
+}
+
+#menu.show {
+  height: 200px;
+}
+
+#palette {
+  position: fixed;
+  top: 50px;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  z-index: 999;
+  background: #b3d4fc;
+}
+
+#palette.show {
+  height: 100px;
+}
 
 #relative {
-  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1000px;
 }
 
 #cubicDiv {
-  position: fixed;
-  width: 500px;
-  height: 700px;
-  left: 0;
+  position: relative;
+  flex: 0 1 400px;
+  width: 400px;
+  height: 600px;
 }
 #cubicBackDiv {
-  position: fixed;
-  width: 500px;
-  height: 700px;
-  left: 500px;
+  position: relative;
+  flex: 0 1 400px;
+  width: 400px;
+  height: 600px;
 }
 
 .side {
@@ -33,7 +72,7 @@
 #side0 {
   position: absolute;
   top: 0;
-  left: 122px;
+  left: 72px;
   width: 200px;
   height: 200px;
   transform: rotate(45deg);
@@ -42,7 +81,7 @@
 #side1 {
   position: absolute;
   top: 200px;
-  left: 50px;
+  left: 0;
   width: 200px;
   height: 150px;
   transform: rotate(45deg) skew(45deg);
@@ -51,7 +90,7 @@
 #side2 {
   position: absolute;
   top: 200px;
-  left: 195px;
+  left: 145px;
   width: 200px;
   height: 150px;
   transform: rotate(-45deg) skew(-45deg);
@@ -60,7 +99,7 @@
 #side3 {
   position: absolute;
   top: 50px;
-  left: 50px;
+  left: 0;
   width: 200px;
   height: 150px;
   transform: rotate(-45deg) skew(-45deg) scale(1, 1);
@@ -70,21 +109,37 @@
 #side4 {
   position: absolute;
   top: 50px;
-  left: 195px;
+  left: 145px;
   width: 200px;
   height: 150px;
   transform: rotate(45deg) skew(45deg) scale(1, 1);
 }
 
-
-
 #side5 {
   position: absolute;
   top: 205px;
-  left: 122px;
+  left: 72px;
   width: 200px;
   height: 200px;
   transform: rotate(45deg) scale(1, 1);
+}
+
+#palette {
+
+}
+
+#palette > button {
+  width: 50px;
+  height: 50px;
+}
+
+.colorBtn {
+  width: 50px;
+  height: 50px;
+  border: solid black 3px;
+}
+.colorBtn.selected {
+  border: solid deeppink 3px;
 }
 
 .cell {
@@ -93,45 +148,44 @@
 }
 
 
-.cell[color=O] {
+.cell[color=O], .colorBtn[color=O] {
   background: #E80;
 }
-.cell[color=O].dragging {
+.cell[color=O].dragging, .colorBtn[color=O].selected {
   background: #D60;
 }
 
-.cell[color=R] {
+.cell[color=R], .colorBtn[color=R] {
   background: #F00;
 }
-.cell[color=R].dragging {
+.cell[color=R].dragging, .colorBtn[color=R].selected {
   background: #D00;
 }
 
-.cell[color=W] {
+.cell[color=W], .colorBtn[color=W] {
   background: #FFF;
 }
-.cell[color=W].dragging {
+.cell[color=W].dragging, .colorBtn[color=W].selected {
   background: #DDD;
 }
 
-.cell[color=Y] {
+.cell[color=Y], .colorBtn[color=Y] {
   background: #FF0;
 }
-.cell[color=Y].dragging {
+.cell[color=Y].dragging, .colorBtn[color=Y].selected {
   background: #DD0;
 }
 
-.cell[color=B] {
+.cell[color=B], .colorBtn[color=B] {
   background: #00F;
 }
-.cell[color=B].dragging {
+.cell[color=B].dragging, .colorBtn[color=B].selected {
   background: #00D;
 }
 
-.cell[color=G] {
+.cell[color=G], .colorBtn[color=G] {
   background: #0F0;
 }
-.cell[color=G].dragging {
+.cell[color=G].dragging, .colorBtn[color=G].selected {
   background: #0D0;
 }
-
