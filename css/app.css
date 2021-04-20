@@ -226,3 +226,5 @@ button:focus {outline:0;}
   66%      { rotateX(135deg); transform: rotateY(135deg) rotateX(135deg); }
   83%      { transform: rotateX(135deg); }
 }
+
+body  { overscroll-behavior: none }
