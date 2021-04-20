@@ -3,7 +3,6 @@
 
 const cubicDiv = document.getElementById(`cubicDiv`)
 const cubicBackDiv = document.getElementById(`cubicBackDiv`)
-const resetBtn = document.getElementById(`resetBtn`)
 let n = 3
 
 
@@ -295,7 +294,10 @@ drawCube(matrices)
 
 let draggable = null
 
-resetBtn.addEventListener('click', (e) => {
+document.getElementById(`resetBtn`).addEventListener('click', (e) => {
+  if (Number(rowSize.value) > 20) {
+    rowSize.value = '20'
+  }
   initCubes(Number(rowSize.value))
 })
 
@@ -346,6 +348,7 @@ function mouseDown(e) {
 
 
   const coords = getCoords(e.target);
+
   const shiftX = (e.pageX || e.changedTouches[0].pageX) - coords.left;
   const shiftY = (e.pageY || e.changedTouches[0].pageY) - coords.top;
   e.target.classList.add('dragging')
@@ -371,8 +374,12 @@ function mouseUp(e) {
     return
   }
 
-  const shiftX = (e.clientX || e.changedTouches[0].clientX) - draggable.x
-  const shiftY = (e.clientY || e.changedTouches[0].clientY) - draggable.y
+  const eX2 = e.clientX || e.changedTouches[0].clientX
+  const eX1 = draggable.x
+  const eY2 =  e.clientY || e.changedTouches[0].clientY
+  const eY1 = draggable.y
+  const shiftX = eX2 - eX1
+  const shiftY = eY2 - eY1
   const absShiftX = Math.abs(shiftX)
   const absShiftY = Math.abs(shiftY)
   draggable.target.classList.remove('dragging')
@@ -382,7 +389,7 @@ function mouseUp(e) {
     const row = Number(e.target.dataset.row)
     const cell = Number(e.target.dataset.cell)
     if (e.changedTouches == null && (side === draggable.side && row === draggable.row && cell === draggable.cell)
-    || e.changedTouches && (absShiftY < 20) && (absShiftY < 20)) {
+    || e.changedTouches && (absShiftX < 20) && (absShiftY < 20)) {
       if (paletteColor !== null) {
         matrices[side][row][cell] = paletteColor
         drawCube(matrices)
@@ -391,57 +398,114 @@ function mouseUp(e) {
     }
   }
 
-  const isDown = absShiftY > absShiftX * 2 && (shiftY > 30)
-  const isUp = absShiftY > absShiftX * 2 && (shiftY < -30)
-  const isLeft = absShiftX > absShiftY * 2 && (shiftX < -30)
-  const isRight = absShiftX > absShiftY * 2 && (shiftX > 30)
-  const isLeftDown = absShiftX < absShiftY * 2 &&  absShiftY < absShiftX * 2 && (shiftX < -20) && (shiftY > 20)
-  const isLeftUp = absShiftX < absShiftY * 2 && absShiftY < absShiftX * 2 && (shiftX < -20) && (shiftY < -20)
-  const isRightDown = absShiftX < absShiftY * 2 && absShiftY < absShiftX * 2 && (shiftX > 20) && (shiftY > 20)
-  const isRightUp = absShiftX < absShiftY * 2 && absShiftY < absShiftX * 2 && (shiftX > 20) && (shiftY < -20)
+  // const shiftAngle = (Math.atan2(shiftX, shiftY) + Math.PI * 3 / 2) % (2 * Math.PI) - Math.PI
+  const shiftAngle = Math.atan2(shiftX, shiftY) + Math.PI;
+  const row = draggable.target.parentNode
+  const side = row.parentNode
+  const hCoords1 = row.children[0].getBoundingClientRect();
+  const hCoords2 = row.children[1].getBoundingClientRect();
+  const vCoords1 = side.children[0].getBoundingClientRect();
+  const vCoords2 = side.children[1].getBoundingClientRect();
+  // const cellsAngle = (Math.atan2(coords1.x - coords2.x, coords1.y - coords2.y) + Math.PI * 3 / 2) % (2 * Math.PI)
+  const hCellShiftX = hCoords1.x - hCoords2.x
+  const hCellShiftY = hCoords1.y - hCoords2.y
+  const vCellShiftX = vCoords1.x - vCoords2.x
+  const vCellShiftY = vCoords1.y - vCoords2.y
+  const cellsAngle = Math.atan2(hCellShiftX, hCellShiftY) + Math.PI;
+  // const diffAngle = ((cellsAngle - shiftAngle) % (2 * Math.PI)) * 180 / Math.PI;
 
-  const fromSide = draggable.side
-  if (draggable.side === 1 || draggable.side === 4) {
-    if (isLeft || isLeftUp) moveLeft(draggable.row, matrices)
-    if (isRight || isRightDown) moveRight(draggable.row, matrices)
-  }
-  if (draggable.side === 1) {
-    if (isUp) moveRightUp(draggable.cell, matrices)
-    if (isDown) moveLeftDown(draggable.cell, matrices)
-  }
-  if (draggable.side === 4) {
-    if (isUp) moveRightDown(n - 1 - draggable.cell, matrices)
-    if (isDown) moveLeftUp(n - 1 - draggable.cell, matrices)
-  }
-  if (draggable.side === 2 || draggable.side === 3) {
-    if (isLeft || isLeftDown) moveLeft(draggable.row, matrices)
-    if (isRight || isRightUp) moveRight(draggable.row, matrices)
-  }
-  if (draggable.side === 2) {
-    if (isUp) moveLeftUp(draggable.cell, matrices)
-    if (isDown) moveRightDown(draggable.cell, matrices)
-  }
-  if (draggable.side === 3) {
-    if (isUp) moveLeftDown(n - 1 - draggable.cell, matrices)
-    if (isDown) moveRightUp(n - 1 - draggable.cell, matrices)
-  }
-  if (draggable.side === 0) {
-    if (isRightUp) moveRightUp(draggable.cell, matrices)
-    if (isRightDown) moveRightDown(n - 1 - draggable.row, matrices)
-    if (isLeftUp) moveLeftUp(n - 1 - draggable.row, matrices)
-    if (isLeftDown) moveLeftDown(draggable.cell, matrices)
-  }
-  if (draggable.side === 5) {
-    if (isRightUp) moveRightDown(n - 1 - draggable.cell, matrices)
-    if (isRightDown) moveRightUp(draggable.row, matrices)
-    if (isLeftUp) moveLeftDown(draggable.row, matrices)
-    if (isLeftDown) moveLeftUp(n - 1 - draggable.cell, matrices)
-  }
+  const hDiffAngle = Math.acos((shiftX * hCellShiftX + shiftY * hCellShiftY) / (Math.sqrt(shiftX * shiftX + shiftY * shiftY) * Math.sqrt(hCellShiftX * hCellShiftX + hCellShiftY * hCellShiftY)))
+  const vDiffAngle = Math.acos((shiftX * vCellShiftX + shiftY * vCellShiftY) / (Math.sqrt(shiftX * shiftX + shiftY * shiftY) * Math.sqrt(vCellShiftX * vCellShiftX + vCellShiftY * vCellShiftY)))
+  console.log(shiftAngle, cellsAngle, hDiffAngle, vDiffAngle)
 
+  const isLeft = hDiffAngle < Math.PI / 5
+  const isRight = hDiffAngle > Math.PI * 10 / 11
+  const isUp = vDiffAngle  < Math.PI / 5
+  const isDown = vDiffAngle > Math.PI * 10 / 11
+  makeMove(isLeft, isRight, isUp, isDown)
 
-  console.log(shiftX, shiftY, `down=${isDown} up=${isUp} left=${isLeft} right=${isRight} ld=${isLeftDown} lu=${isLeftUp} rd=${isRightDown} ru=${isRightUp}`)
   draggable = null
   drawCube(matrices)
+}
+
+function makeMove(isLeft, isRight, isUp, isDown) {
+
+
+  if (draggable.side === 1) {
+    if (isUp) {
+      return moveRightUp(draggable.cell, matrices)
+    }
+    if (isDown) {
+      return moveLeftDown(draggable.cell, matrices)
+    }
+  }
+
+  if (draggable.side === 3) {
+    if (isUp) {
+      return moveLeftDown(n - 1 - draggable.cell, matrices)
+    }
+    if (isDown) {
+      return moveRightUp(n - 1 - draggable.cell, matrices)
+    }
+  }
+
+  if (draggable.side === 2) {
+    if (isUp) {
+      return moveLeftUp(draggable.cell, matrices)
+    }
+    if (isDown) {
+      return moveRightDown(draggable.cell, matrices)
+    }
+  }
+
+  if (draggable.side === 4) {
+    if (isUp) {
+      return moveRightDown(n - 1 - draggable.cell, matrices)
+    }
+    if (isDown) {
+      return moveLeftUp(n - 1 - draggable.cell, matrices)
+    }
+  }
+
+  if (draggable.side === 1 || draggable.side === 2 || draggable.side === 3 || draggable.side === 4) {
+    if (isLeft) {
+      return moveLeft(draggable.row, matrices)
+    }
+    if (isRight) {
+      return moveRight(draggable.row, matrices)
+    }
+
+  }
+
+  if (draggable.side === 0) {
+    if (isLeft) {
+      return moveLeftUp(n - 1 - draggable.row, matrices)
+    }
+    if (isRight) {
+      return moveRightDown(n - 1 - draggable.row, matrices)
+    }
+    if (isUp) {
+      return moveRightUp(draggable.cell, matrices)
+    }
+    if (isDown) {
+      return moveLeftDown(draggable.cell, matrices)
+    }
+  }
+
+  if (draggable.side === 5) {
+    if (isLeft) {
+      return moveLeftDown(draggable.row, matrices)
+    }
+    if (isRight) {
+      return moveRightUp(draggable.row, matrices)
+    }
+    if (isUp) {
+      return moveRightDown(n - 1 - draggable.cell, matrices)
+    }
+    if (isDown) {
+      return moveLeftUp(n - 1 - draggable.cell, matrices)
+    }
+  }
 }
 
 document.body.ondragstart = function() {

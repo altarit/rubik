@@ -70,6 +70,7 @@ button:focus {outline:0;}
   /*flex-wrap: wrap;*/
   /*justify-content: space-around;*/
   max-width: 1000px;
+  height: 1000px;
   overflow: hidden;
 }
 
@@ -216,6 +217,7 @@ button:focus {outline:0;}
 
   transform:  rotateX(45deg)  rotateY(0deg) rotateZ(135deg);
   /*transform:  rotateX(135deg)  rotateY(180deg) rotateZ(-45deg);*/
+  /*transform: rotate3d(1, 1, 1, 45deg);*/
 }
 
 
@@ -227,4 +229,7 @@ button:focus {outline:0;}
   83%      { transform: rotateX(135deg); }
 }
 
-body  { overscroll-behavior: none }
+body  {
+  overscroll-behavior: none;
+  overflow: hidden;
+}
