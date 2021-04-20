@@ -46,15 +46,15 @@ function addSide(s) {
 function initCubes(newN) {
   n = newN
   cubicDiv.innerHTML = ''
-  cubicBackDiv.innerHTML = ''
+  // cubicBackDiv.innerHTML = ''
 
   cubicDiv.appendChild(addSide('0'))
   cubicDiv.appendChild(addSide('1'))
   cubicDiv.appendChild(addSide('2'))
 
-  cubicBackDiv.appendChild(addSide('3'))
-  cubicBackDiv.appendChild(addSide('4'))
-  cubicBackDiv.appendChild(addSide('5'))
+  cubicDiv.appendChild(addSide('3'))
+  cubicDiv.appendChild(addSide('4'))
+  cubicDiv.appendChild(addSide('5'))
 
   matrices = [ getMatrix(W), getMatrix(B), getMatrix(O), getMatrix(G), getMatrix(R), getMatrix(Y) ]
 
