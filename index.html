@@ -26,38 +26,41 @@
 <body>
 <div class="headerButtons">
   <button id="menuBtn" class="btn">Menu</button>
+  <span>Rubik</span>
   <button id="paletteBtn" class="btn">Palette</button>
 </div>
 <div id="menu">
   <div>
-    <label for="rowSize">Cube size: </label>
+    <label for="rowSize">Size: </label>
     <input id="rowSize" type="number" min="1" max="12" value="3" class="nmb"/>
     <button id="resetBtn" class="btn">Reset</button>
   </div>
   <div>
     <label for="randomizeDepth">Moves: </label>
-    <input id="randomizeDepth" type="number" min="1" max="999" value="100" step="1"  class="nmb"/>
+    <input id="randomizeDepth" type="number" min="1" max="999" value="100" step="1" class="nmb"/>
     <button id="randomizeBtn" class="btn">Randomize</button>
   </div>
   <div>
-  <button id="solveBtn" class="btn disabled" disabled>Solve</button>
+    <button id="solveBtn" class="btn disabled" disabled>Solve</button>
   </div>
 </div>
 <div id="palette">
-  <button class="colorBtn" color="W"></button>
-  <button class="colorBtn" color="B"></button>
-  <button class="colorBtn" color="O"></button>
-  <button class="colorBtn" color="G"></button>
-  <button class="colorBtn" color="R"></button>
-  <button class="colorBtn" color="Y"></button>
+  <div>
+    <button class="colorBtn" color="W"></button>
+    <button class="colorBtn" color="B"></button>
+    <button class="colorBtn" color="O"></button>
+    <button class="colorBtn" color="G"></button>
+    <button class="colorBtn" color="R"></button>
+    <button class="colorBtn" color="Y"></button>
+  </div>
 </div>
 
 <div id="relative">
-  <div id="cubicDiv">
-  </div>
 
-<!--  <div id="cubicBackDiv">-->
-<!--  </div>-->
+  <div id="cubicParent" style="transform: rotateX(0deg)  rotateY(0deg) rotateZ(0deg)">
+    <div id="cubicDiv" style="transform: rotateX(45deg)  rotateY(0deg) rotateZ(135deg)">
+    </div>
+  </div>
 </div>
 
 

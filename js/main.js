@@ -18,7 +18,6 @@ let matrices = []
 let currentHash = 'WBOGRY'
 
 
-
 function addSide(s) {
   const side = document.createElement('div')
   side.id = `side${s}`
@@ -295,7 +294,7 @@ drawCube(matrices)
 let draggable = null
 
 document.getElementById(`resetBtn`).addEventListener('click', (e) => {
-  if (Number(rowSize.value) > 20) {
+  if (Number(rowSize.value) > 200) {
     rowSize.value = '20'
   }
   initCubes(Number(rowSize.value))
@@ -333,6 +332,8 @@ let isPaletteOpen = false
 let paletteColor = null
 let paletteColorBtn = null
 
+let rotating = null
+
 document.body.addEventListener('mousedown', mouseDown)
 document.body.addEventListener('touchstart', mouseDown)
 function mouseDown(e) {
@@ -342,6 +343,15 @@ function mouseDown(e) {
   }
 
   if (!e.target.classList.contains('cell')) {
+    // if (e.target.classList)
+    if (e.target.id === 'cubicDiv' || e.target.tagName === 'body' || e.target.id === 'cubicParent' || e.target.id === 'relative') {
+      rotating = {
+        x: e.clientX || e.changedTouches[0].clientX,
+        y: e.clientY || e.changedTouches[0].clientY,
+        Xspeed: 0,
+        Yspeed: 0
+      }
+    }
     return
   }
   const {side, row, cell} = e.target.dataset
@@ -366,10 +376,48 @@ function mouseDown(e) {
 
 }
 
+
+document.body.addEventListener('mousemove', mouseMove)
+document.body.addEventListener('touchmove', mouseMove)
+function mouseMove(e) {
+  if (rotating) {
+    let diffX = 0
+    let diffY = 0
+    if (e) {
+      const x = e.pageX || e.changedTouches[0].pageX
+      const y = e.pageY || e.changedTouches[0].pageY
+      diffX = x - rotating.x
+      diffY = y - rotating.y
+      rotating.x = x
+      rotating.y = y
+      rotating.Xspeed = diffX
+      rotating.Yspeed = diffY
+    } else {
+      diffX = rotating.Xspeed
+      diffY = rotating.Yspeed
+    }
+
+    trans.x = Math.trunc(3600 + trans.x - diffY * 5) % 3600
+    // trans.z = (3600 + trans.z - e.movementX * 5) % 3600
+    trans.z = Math.trunc(3600 + trans.z - diffX * 4 * Math.sign(Math.sin(trans.x / 5 / 360 * Math.PI ))) % 3600
+    // trans.z = Math.trunc(trans.z + e.movementX * 5 * Math.cos(trans.x / 10 / 360 * Math.PI))
+    // trans.z = Math.trunc(trans.z + e.movementX * 5 * Math.sin(trans.x / 10 / 360 * Math.PI))
+    // trans.y = (trans.y + e.movementX * 5 * Math.cos(trans.Y / 10))
+    // trans.z = (trans.z + e.movementX)
+
+    applyTr()
+  }
+}
+
 document.body.addEventListener('mouseup',  mouseUp)
 document.body.addEventListener('touchend', mouseUp)
 
 function mouseUp(e) {
+
+  if (rotating) {
+    continueRotating()
+  }
+
   if (draggable == null) {
     return
   }
@@ -425,7 +473,23 @@ function mouseUp(e) {
   makeMove(isLeft, isRight, isUp, isDown)
 
   draggable = null
+
   drawCube(matrices)
+}
+
+function continueRotating() {
+  if (rotating.Xspeed > 0 || rotating.Yspeed > 0.7) {
+    if (rotating.Xspeed > 0) {
+      rotating.Xspeed -= 1
+    }
+    if (rotating.Yspeed > 0.7) {
+      rotating.Yspeed -= 0.7
+    }
+    mouseMove()
+    setTimeout(continueRotating, 10)
+  } else {
+    rotating = null
+  }
 }
 
 function makeMove(isLeft, isRight, isUp, isDown) {
@@ -640,4 +704,15 @@ function solve() {
 
 }
 
-// solve()
+
+const trans = {
+  x: 450,
+  y: 0,
+  z: 1350
+}
+
+
+function applyTr() {
+  cubicDiv.style.transform = `rotateX(${Math.trunc(trans.x / 10)}deg) rotateY(${Math.trunc(trans.y / 10)}deg) rotateZ(${Math.trunc(trans.z / 10)}deg)`
+}
+

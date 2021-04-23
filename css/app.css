@@ -20,8 +20,9 @@ button:focus {outline:0;}
 }
 
 .nmb {
-  padding: 8px 28px;
+  padding: 8px 8px;
   font-size: 24px;
+  width: 60px;
 }
 
 .btn.disabled {
@@ -37,13 +38,27 @@ button:focus {outline:0;}
   overflow: hidden;
   z-index: 999;
   background: #b3d4fc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #menu > div {
+  width: 280px;
   margin: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+#menu .nmb + .btn {
+  width: 140px;
+}
+
+#menu label {
+  width: 50px;
+  text-align: right;
 }
 
 #menu.show {
@@ -63,9 +78,16 @@ button:focus {outline:0;}
 #palette.show {
   height: 60px;
   padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+#palette > div {
+  width: 320px;
 }
 
 #relative {
+  position: relative;
   /*display: flex;*/
   /*flex-wrap: wrap;*/
   /*justify-content: space-around;*/
@@ -210,12 +232,13 @@ button:focus {outline:0;}
   /*position: fixed;*/
   /*left: 200px;*/
   /*top: 200px;*/
-  animation: spincube 24s ease-in-out infinite;
+  /*animation: spincube 24s ease-in-out infinite;*/
   transform-style: preserve-3d;
+  /*transition: transform 0.5s ease-in-out;*/
   /*transform-origin: 120px 120px 0px;*/
   /*transform-origin: 120px 120px 0px;*/
 
-  transform:  rotateX(45deg)  rotateY(0deg) rotateZ(135deg);
+  /*transform:  rotateX(45deg)  rotateY(0deg) rotateZ(135deg);*/
   /*transform:  rotateX(135deg)  rotateY(180deg) rotateZ(-45deg);*/
   /*transform: rotate3d(1, 1, 1, 45deg);*/
 }
@@ -232,4 +255,22 @@ button:focus {outline:0;}
 body  {
   overscroll-behavior: none;
   overflow: hidden;
+}
+
+#arrows {
+  position: fixed;
+  left: 400px;
+  top: 100px;
+}
+
+
+#cubicParent {
+  transform-style: preserve-3d;
+}
+
+.headerButtons span {
+  font-size: 32px;
+  line-height: 50px;
+  text-align: end;
+  vertical-align: bottom;
 }
