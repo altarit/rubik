@@ -478,7 +478,8 @@ function mouseUp(e) {
 }
 
 function continueRotating() {
-  if (rotating.Xspeed > 0 || rotating.Yspeed > 0) {
+  rotating = null
+  if (rotating && (rotating.Xspeed > 0 || rotating.Yspeed > 0)) {
     if (rotating.Xspeed > 9) {
       rotating.Xspeed = 9
     }
