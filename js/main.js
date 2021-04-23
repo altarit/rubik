@@ -478,12 +478,18 @@ function mouseUp(e) {
 }
 
 function continueRotating() {
-  if (rotating.Xspeed > 0 || rotating.Yspeed > 0.7) {
+  if (rotating.Xspeed > 0 || rotating.Yspeed > 0) {
+    if (rotating.Xspeed > 9) {
+      rotating.Xspeed = 9
+    }
+    if (rotating.Yspeed > 7) {
+      rotating.Yspeed = 7
+    }
     if (rotating.Xspeed > 0) {
       rotating.Xspeed -= 1
     }
-    if (rotating.Yspeed > 0.7) {
-      rotating.Yspeed -= 0.7
+    if (rotating.Yspeed > 0) {
+      rotating.Yspeed -= 1
     }
     mouseMove()
     setTimeout(continueRotating, 10)
