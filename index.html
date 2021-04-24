@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Rubik</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,7 +24,7 @@
 </head>
 
 <body>
-<div class="headerButtons">
+<div class="header">
   <button id="menuBtn" class="btn">Menu</button>
   <span>Rubik</span>
   <button id="paletteBtn" class="btn">Palette</button>
@@ -32,12 +32,12 @@
 <div id="menu">
   <div>
     <label for="rowSize">Size: </label>
-    <input id="rowSize" type="number" min="1" max="12" value="3" class="nmb"/>
+    <input id="rowSize" type="number" min="1" max="12" value="3" class="input"/>
     <button id="resetBtn" class="btn">Reset</button>
   </div>
   <div>
     <label for="randomizeDepth">Moves: </label>
-    <input id="randomizeDepth" type="number" min="1" max="999" value="100" step="1" class="nmb"/>
+    <input id="randomizeDepth" type="number" min="1" max="999" value="100" step="1" class="input"/>
     <button id="randomizeBtn" class="btn">Randomize</button>
   </div>
   <div>
@@ -56,18 +56,11 @@
 </div>
 
 <div id="relative">
-
-  <div id="cubicParent" style="transform: rotateX(0deg)  rotateY(0deg) rotateZ(0deg)">
-    <div id="cubicDiv" style="transform: rotateX(45deg)  rotateY(0deg) rotateZ(135deg)">
-    </div>
+  <div id="cubicDiv" style="transform: rotateX(45deg)  rotateY(0deg) rotateZ(135deg)">
   </div>
 </div>
 
-
-<script src="js/vendor/modernizr-3.11.2.min.js"></script>
-<script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 
 </body>
-
 </html>

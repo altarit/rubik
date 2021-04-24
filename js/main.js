@@ -1,10 +1,4 @@
-// const canvas = document.getElementById('canvas');
-// const ctx = canvas.getContext('2d');
-
 const cubicDiv = document.getElementById(`cubicDiv`)
-const cubicBackDiv = document.getElementById(`cubicBackDiv`)
-let n = 3
-
 
 const G = 'G'
 const Y = 'Y'
@@ -13,22 +7,37 @@ const O = 'O'
 const B = 'B'
 const R = 'R'
 
+let n = 3
 let sides = []
 let matrices = []
 let currentHash = 'WBOGRY'
 
+/* Multiplied by 10 */
+const trans = {
+  x: 450,
+  y: 0,
+  z: 1350
+}
+
+let draggable = null
+let rotating = null
+
+let isMenuOpen = false
+let isPaletteOpen = false
+let paletteColor = null
+let paletteColorBtn = null
 
 function addSide(s) {
   const side = document.createElement('div')
   side.id = `side${s}`
   side.classList.add('side')
   side.dataset.s = s
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     const row = document.createElement('div')
     row.classList.add('row')
     row.dataset.row = i
     row.dataset.side = s
-    for(let j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       const cell = document.createElement('div')
       cell.classList.add('cell')
       cell.dataset.cell = j
@@ -44,7 +53,6 @@ function addSide(s) {
 function initCubes(newN) {
   n = newN
   cubicDiv.innerHTML = ''
-  // cubicBackDiv.innerHTML = ''
 
   cubicDiv.appendChild(addSide('0'))
   cubicDiv.appendChild(addSide('1'))
@@ -54,7 +62,7 @@ function initCubes(newN) {
   cubicDiv.appendChild(addSide('4'))
   cubicDiv.appendChild(addSide('5'))
 
-  matrices = [ getMatrix(W), getMatrix(B), getMatrix(O), getMatrix(G), getMatrix(R), getMatrix(Y) ]
+  matrices = [getMatrix(W), getMatrix(B), getMatrix(O), getMatrix(G), getMatrix(R), getMatrix(Y)]
 
   currentHash = toHash(matrices)
 
@@ -92,8 +100,8 @@ function toHash(mat) {
 }
 
 function fromHash(hash) {
-  const mat = [ getMatrix(W), getMatrix(B), getMatrix(O), getMatrix(G), getMatrix(R), getMatrix(Y) ]
-  for(let i = 0; i < hash.length; i++) {
+  const mat = [getMatrix(W), getMatrix(B), getMatrix(O), getMatrix(G), getMatrix(R), getMatrix(Y)]
+  for (let i = 0; i < hash.length; i++) {
     const side = Math.trunc(i / (n * n))
     const rest = i % (n * n)
     const row = Math.trunc(rest / n)
@@ -134,7 +142,7 @@ function copyMatrix(mat) {
 }
 
 function moveRow(rowFrom, rowTo) {
-  for(let i = 0; i < n; i++){
+  for (let i = 0; i < n; i++) {
     rowTo[i] = rowFrom[i]
   }
 }
@@ -195,16 +203,16 @@ function moveSideCounterClockwise(side) {
 
 function moveLeftUp(col, matrix) {
   const tempSide = copySide(matrix[2])
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[2][i][col] = matrix[5][n - 1 - i][n - 1 - col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[5][i][n - 1 - col] = matrix[4][i][n - 1 - col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[4][i][n - 1 - col] = matrix[0][n - 1 - col][n - 1 - i]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[0][n - 1 - col][i] = tempSide[i][col]
   }
   if (col === 0) {
@@ -217,16 +225,16 @@ function moveLeftUp(col, matrix) {
 
 function moveLeftDown(col, matrix) {
   const tempSide = copySide(matrix[1])
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[1][i][col] = matrix[0][i][col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[0][i][col] = matrix[3][n - 1 - i][n - 1 - col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[3][i][n - 1 - col] = matrix[5][col][i]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[5][col][n - 1 - i] = tempSide[i][col]
   }
   if (col === 0) {
@@ -239,16 +247,16 @@ function moveLeftDown(col, matrix) {
 
 function moveRightUp(col, matrix) {
   const tempSide = copySide(matrix[1])
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[1][i][col] = matrix[5][col][n - 1 - i]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[5][col][i] = matrix[3][i][n - 1 - col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[3][n - 1 - i][n - 1 - col] = matrix[0][i][col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[0][i][col] = tempSide[i][col]
   }
 
@@ -262,16 +270,16 @@ function moveRightUp(col, matrix) {
 
 function moveRightDown(col, matrix) {
   const tempSide = copySide(matrix[2])
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[2][i][col] = matrix[0][n - 1 - col][i]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[0][n - 1 - col][n - 1 - i] = matrix[4][i][n - 1 - col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[4][i][n - 1 - col] = matrix[5][i][n - 1 - col]
   }
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     matrix[5][n - 1 - i][n - 1 - col] = tempSide[i][col]
   }
   if (col === 0) {
@@ -283,15 +291,11 @@ function moveRightDown(col, matrix) {
 }
 
 function drawCube(matrix) {
-  for(let i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     fillSide(matrix[i], sides[i])
   }
 }
 
-// moveLeft(1)
-drawCube(matrices)
-
-let draggable = null
 
 document.getElementById(`resetBtn`).addEventListener('click', (e) => {
   if (Number(rowSize.value) > 200) {
@@ -301,7 +305,7 @@ document.getElementById(`resetBtn`).addEventListener('click', (e) => {
 })
 
 document.getElementById(`randomizeBtn`).addEventListener('click', (e) => {
-  for(let i = 0; i < Number(randomizeDepth.value); i++) {
+  for (let i = 0; i < Number(randomizeDepth.value); i++) {
     randomMove(matrices)
   }
   drawCube(matrices)
@@ -325,17 +329,9 @@ function randomMove(matrix) {
   }
 }
 
-
-
-let isMenuOpen = false
-let isPaletteOpen = false
-let paletteColor = null
-let paletteColorBtn = null
-
-let rotating = null
-
 document.body.addEventListener('mousedown', mouseDown)
 document.body.addEventListener('touchstart', mouseDown)
+
 function mouseDown(e) {
   if (draggable) {
     draggable.target.classList.remove('dragging')
@@ -343,8 +339,7 @@ function mouseDown(e) {
   }
 
   if (!e.target.classList.contains('cell')) {
-    // if (e.target.classList)
-    if (e.target.id === 'cubicDiv' || e.target.tagName === 'body' || e.target.id === 'cubicParent' || e.target.id === 'relative') {
+    if (e.target.id === 'cubicDiv' || e.target.tagName === 'body' || e.target.id === 'relative') {
       rotating = {
         x: e.clientX || e.changedTouches[0].clientX,
         y: e.clientY || e.changedTouches[0].clientY,
@@ -354,14 +349,8 @@ function mouseDown(e) {
     }
     return
   }
+
   const {side, row, cell} = e.target.dataset
-
-
-  const coords = getCoords(e.target);
-
-  const shiftX = (e.pageX || e.changedTouches[0].pageX) - coords.left;
-  const shiftY = (e.pageY || e.changedTouches[0].pageY) - coords.top;
-  e.target.classList.add('dragging')
 
   draggable = {
     side: Number(side),
@@ -371,18 +360,18 @@ function mouseDown(e) {
     y: e.clientY || e.changedTouches[0].clientY,
     target: e.target
   }
+  e.target.classList.add('dragging')
 
   console.log(draggable)
-
 }
-
 
 document.body.addEventListener('mousemove', mouseMove)
 document.body.addEventListener('touchmove', mouseMove)
+
 function mouseMove(e) {
   if (rotating) {
-    let diffX = 0
-    let diffY = 0
+    let diffX
+    let diffY
     if (e) {
       const x = e.pageX || e.changedTouches[0].pageX
       const y = e.pageY || e.changedTouches[0].pageY
@@ -398,18 +387,13 @@ function mouseMove(e) {
     }
 
     trans.x = Math.trunc(3600 + trans.x - diffY * 5) % 3600
-    // trans.z = (3600 + trans.z - e.movementX * 5) % 3600
-    trans.z = Math.trunc(3600 + trans.z - diffX * 4 * Math.sign(Math.sin(trans.x / 5 / 360 * Math.PI ))) % 3600
-    // trans.z = Math.trunc(trans.z + e.movementX * 5 * Math.cos(trans.x / 10 / 360 * Math.PI))
-    // trans.z = Math.trunc(trans.z + e.movementX * 5 * Math.sin(trans.x / 10 / 360 * Math.PI))
-    // trans.y = (trans.y + e.movementX * 5 * Math.cos(trans.Y / 10))
-    // trans.z = (trans.z + e.movementX)
+    trans.z = Math.trunc(3600 + trans.z - diffX * 4 * Math.sign(Math.sin(trans.x / 5 / 360 * Math.PI))) % 3600
 
     applyTr()
   }
 }
 
-document.body.addEventListener('mouseup',  mouseUp)
+document.body.addEventListener('mouseup', mouseUp)
 document.body.addEventListener('touchend', mouseUp)
 
 function mouseUp(e) {
@@ -424,7 +408,7 @@ function mouseUp(e) {
 
   const eX2 = e.clientX || e.changedTouches[0].clientX
   const eX1 = draggable.x
-  const eY2 =  e.clientY || e.changedTouches[0].clientY
+  const eY2 = e.clientY || e.changedTouches[0].clientY
   const eY1 = draggable.y
   const shiftX = eX2 - eX1
   const shiftY = eY2 - eY1
@@ -437,7 +421,7 @@ function mouseUp(e) {
     const row = Number(e.target.dataset.row)
     const cell = Number(e.target.dataset.cell)
     if (e.changedTouches == null && (side === draggable.side && row === draggable.row && cell === draggable.cell)
-    || e.changedTouches && (absShiftX < 20) && (absShiftY < 20)) {
+      || e.changedTouches && (absShiftX < 20) && (absShiftY < 20)) {
       if (paletteColor !== null) {
         matrices[side][row][cell] = paletteColor
         drawCube(matrices)
@@ -446,7 +430,6 @@ function mouseUp(e) {
     }
   }
 
-  // const shiftAngle = (Math.atan2(shiftX, shiftY) + Math.PI * 3 / 2) % (2 * Math.PI) - Math.PI
   const shiftAngle = Math.atan2(shiftX, shiftY) + Math.PI;
   const row = draggable.target.parentNode
   const side = row.parentNode
@@ -454,13 +437,11 @@ function mouseUp(e) {
   const hCoords2 = row.children[1].getBoundingClientRect();
   const vCoords1 = side.children[0].getBoundingClientRect();
   const vCoords2 = side.children[1].getBoundingClientRect();
-  // const cellsAngle = (Math.atan2(coords1.x - coords2.x, coords1.y - coords2.y) + Math.PI * 3 / 2) % (2 * Math.PI)
   const hCellShiftX = hCoords1.x - hCoords2.x
   const hCellShiftY = hCoords1.y - hCoords2.y
   const vCellShiftX = vCoords1.x - vCoords2.x
   const vCellShiftY = vCoords1.y - vCoords2.y
   const cellsAngle = Math.atan2(hCellShiftX, hCellShiftY) + Math.PI;
-  // const diffAngle = ((cellsAngle - shiftAngle) % (2 * Math.PI)) * 180 / Math.PI;
 
   const hDiffAngle = Math.acos((shiftX * hCellShiftX + shiftY * hCellShiftY) / (Math.sqrt(shiftX * shiftX + shiftY * shiftY) * Math.sqrt(hCellShiftX * hCellShiftX + hCellShiftY * hCellShiftY)))
   const vDiffAngle = Math.acos((shiftX * vCellShiftX + shiftY * vCellShiftY) / (Math.sqrt(shiftX * shiftX + shiftY * shiftY) * Math.sqrt(vCellShiftX * vCellShiftX + vCellShiftY * vCellShiftY)))
@@ -468,7 +449,7 @@ function mouseUp(e) {
 
   const isLeft = hDiffAngle < Math.PI / 5
   const isRight = hDiffAngle > Math.PI * 10 / 11
-  const isUp = vDiffAngle  < Math.PI / 5
+  const isUp = vDiffAngle < Math.PI / 5
   const isDown = vDiffAngle > Math.PI * 10 / 11
   makeMove(isLeft, isRight, isUp, isDown)
 
@@ -478,8 +459,7 @@ function mouseUp(e) {
 }
 
 function continueRotating() {
-  rotating = null
-  if (rotating && (rotating.Xspeed > 0 || rotating.Yspeed > 0)) {
+  if (false && (rotating.Xspeed > 0 || rotating.Yspeed > 0)) {
     if (rotating.Xspeed > 9) {
       rotating.Xspeed = 9
     }
@@ -500,8 +480,6 @@ function continueRotating() {
 }
 
 function makeMove(isLeft, isRight, isUp, isDown) {
-
-
   if (draggable.side === 1) {
     if (isUp) {
       return moveRightUp(draggable.cell, matrices)
@@ -579,11 +557,11 @@ function makeMove(isLeft, isRight, isUp, isDown) {
   }
 }
 
-document.body.ondragstart = function() {
+document.body.ondragstart = function () {
   return false;
 };
 
-function getCoords(elem) {   // кроме IE8-
+function getCoords(elem) {
   const box = elem.getBoundingClientRect();
   return {
     top: box.top + pageYOffset,
@@ -612,7 +590,7 @@ document.getElementById('paletteBtn').onclick = function () {
   paletteColor = null
 }
 
-document.getElementById('palette').addEventListener('click', function(e) {
+document.getElementById('palette').addEventListener('click', function (e) {
   if (e.target && e.target.classList.contains('colorBtn')) {
     const color = e.target.getAttribute('color')
     if (color === paletteColor) {
@@ -646,7 +624,7 @@ function solveInner(depth, matrix) {
 
   // console.log(depth + ' hash ' + hash)
 
-  for(let i = 0; i < n; i ++) {
+  for (let i = 0; i < n; i++) {
     moveLeft(i, matrix)
     solveInner(depth - 1, matrix)
     moveRight(i, matrix)
@@ -711,15 +689,8 @@ function solve() {
 
 }
 
-
-const trans = {
-  x: 450,
-  y: 0,
-  z: 1350
-}
-
-
 function applyTr() {
   cubicDiv.style.transform = `rotateX(${Math.trunc(trans.x / 10)}deg) rotateY(${Math.trunc(trans.y / 10)}deg) rotateZ(${Math.trunc(trans.z / 10)}deg)`
 }
 
+drawCube(matrices)

@@ -1,11 +1,27 @@
-button:focus {outline:0;}
+button:focus {
+  outline: 0;
+}
 
-.headerButtons {
+body {
+  overscroll-behavior: none;
+  overflow: hidden;
+}
+
+/* Header and menu */
+.header {
   height: 50px;
   background: #b3d4fc;
   display: flex;
   justify-content: space-between;
 }
+
+.header span {
+  font-size: 32px;
+  line-height: 50px;
+  text-align: end;
+  vertical-align: bottom;
+}
+
 
 .btn {
   background-color: #4CAF50;
@@ -19,7 +35,7 @@ button:focus {outline:0;}
   font-size: 16px;
 }
 
-.nmb {
+.input {
   padding: 8px 8px;
   font-size: 24px;
   width: 60px;
@@ -52,7 +68,7 @@ button:focus {outline:0;}
   justify-content: space-around;
 }
 
-#menu .nmb + .btn {
+#menu .input + .btn {
   width: 140px;
 }
 
@@ -83,33 +99,35 @@ button:focus {outline:0;}
 }
 
 #palette > div {
-  width: 320px;
+  width: 340px;
 }
+
+.colorBtn {
+  width: 50px;
+  height: 50px;
+  border: solid black 3px;
+}
+
+.colorBtn.selected {
+  border: solid deeppink 3px;
+}
+
+/* Cubic */
 
 #relative {
   position: relative;
-  /*display: flex;*/
-  /*flex-wrap: wrap;*/
-  /*justify-content: space-around;*/
   max-width: 1000px;
   height: 1000px;
   overflow: hidden;
 }
 
 #cubicDiv {
-  /*position: relative;*/
-  /*flex: 0 1 400px;*/
   width: 100%;
   height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-#cubicBackDiv {
-  position: relative;
-  flex: 0 1 400px;
-  width: 400px;
-  height: 600px;
+  transform-style: preserve-3d;
 }
 
 .side {
@@ -120,90 +138,13 @@ button:focus {outline:0;}
   display: flex;
 }
 
-.row {
-  flex-flow: row;
-  display: flex;
-  flex: 0 1 100%;
-}
-
-
-#palette {
-
-}
-
-#palette > button {
-  width: 50px;
-  height: 50px;
-}
-
-.colorBtn {
-  width: 50px;
-  height: 50px;
-  border: solid black 3px;
-}
-.colorBtn.selected {
-  border: solid deeppink 3px;
-}
-
-.cell {
-  border: 1px solid #000;
-  flex: 0 1 100%;
-}
-
-
-.cell[color=O], .colorBtn[color=O] {
-  background: #E80;
-}
-.cell[color=O].dragging, .colorBtn[color=O].selected {
-  background: #D60;
-}
-
-.cell[color=R], .colorBtn[color=R] {
-  background: #F00;
-}
-.cell[color=R].dragging, .colorBtn[color=R].selected {
-  background: #D00;
-}
-
-.cell[color=W], .colorBtn[color=W] {
-  background: #FFF;
-}
-.cell[color=W].dragging, .colorBtn[color=W].selected {
-  background: #DDD;
-}
-
-.cell[color=Y], .colorBtn[color=Y] {
-  background: #FF0;
-}
-.cell[color=Y].dragging, .colorBtn[color=Y].selected {
-  background: #DD0;
-}
-
-.cell[color=B], .colorBtn[color=B] {
-  background: #00F;
-}
-.cell[color=B].dragging, .colorBtn[color=B].selected {
-  background: #00D;
-}
-
-.cell[color=G], .colorBtn[color=G] {
-  background: #0F0;
-}
-.cell[color=G].dragging, .colorBtn[color=G].selected {
-  background: #0D0;
-}
-
-
-
-
-
 #cubicDiv .side {
   position: absolute;
   width: 240px;
   height: 240px;
   border: 1px solid #ccc;
-  background: rgba(255,255,255,0.8);
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
   text-align: center;
   line-height: 240px;
   font-size: 180px;
@@ -212,65 +153,82 @@ button:focus {outline:0;}
 #side0 {
   transform: translateZ(120px) rotateZ(-90deg);
 }
+
 #side1 {
   transform: rotateY(90deg) translateZ(120px) rotateZ(-90deg);
 }
+
 #side2 {
   transform: rotateY(90deg) rotateX(90deg) translateZ(120px) rotateZ(-90deg);
 }
+
 #side3 {
   transform: rotateY(-90deg) rotateZ(90deg) translateZ(120px);
 }
+
 #side4 {
   transform: rotateX(-90deg) translateZ(120px);
 }
+
 #side5 {
   transform: rotateY(180deg) rotateZ(90deg) translateZ(120px) rotateZ(90deg);
 }
 
-#cubicDiv {
-  /*position: fixed;*/
-  /*left: 200px;*/
-  /*top: 200px;*/
-  /*animation: spincube 24s ease-in-out infinite;*/
-  transform-style: preserve-3d;
-  /*transition: transform 0.5s ease-in-out;*/
-  /*transform-origin: 120px 120px 0px;*/
-  /*transform-origin: 120px 120px 0px;*/
-
-  /*transform:  rotateX(45deg)  rotateY(0deg) rotateZ(135deg);*/
-  /*transform:  rotateX(135deg)  rotateY(180deg) rotateZ(-45deg);*/
-  /*transform: rotate3d(1, 1, 1, 45deg);*/
+.row {
+  flex-flow: row;
+  display: flex;
+  flex: 0 1 100%;
 }
 
-
-@keyframes spincube {
-  16%      { transform:  rotateX(45deg)  rotateY(45deg) rotateZ(135deg); }
-  33%      { rotateZ(135deg); transform: rotateY(-45deg) rotateZ(135deg); }
-  50%      { rotateZ(135deg); transform: rotateY(-135deg) rotateZ(135deg); }
-  66%      { rotateX(135deg); transform: rotateY(135deg) rotateX(135deg); }
-  83%      { transform: rotateX(135deg); }
+.cell {
+  border: 1px solid #000;
+  flex: 0 1 100%;
 }
 
-body  {
-  overscroll-behavior: none;
-  overflow: hidden;
+.cell[color=O], .colorBtn[color=O] {
+  background: #E80;
 }
 
-#arrows {
-  position: fixed;
-  left: 400px;
-  top: 100px;
+.cell[color=O].dragging, .colorBtn[color=O].selected {
+  background: #D60;
 }
 
-
-#cubicParent {
-  transform-style: preserve-3d;
+.cell[color=R], .colorBtn[color=R] {
+  background: #F00;
 }
 
-.headerButtons span {
-  font-size: 32px;
-  line-height: 50px;
-  text-align: end;
-  vertical-align: bottom;
+.cell[color=R].dragging, .colorBtn[color=R].selected {
+  background: #D00;
+}
+
+.cell[color=W], .colorBtn[color=W] {
+  background: #FFF;
+}
+
+.cell[color=W].dragging, .colorBtn[color=W].selected {
+  background: #DDD;
+}
+
+.cell[color=Y], .colorBtn[color=Y] {
+  background: #FF0;
+}
+
+.cell[color=Y].dragging, .colorBtn[color=Y].selected {
+  background: #DD0;
+}
+
+.cell[color=B], .colorBtn[color=B] {
+  background: #00F;
+}
+
+.cell[color=B].dragging, .colorBtn[color=B].selected {
+  background: #00D;
+}
+
+.cell[color=G], .colorBtn[color=G] {
+  background: #0F0;
+}
+
+.cell[color=G].dragging, .colorBtn[color=G].selected {
+  background: #0D0;
 }
